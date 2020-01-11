@@ -1,0 +1,221 @@
+{
+    "kind": "List",
+    "apiVersion": "v1",
+    "metadata": {},
+    "items": [
+        {
+            "kind": "ImageStreamTag",
+            "apiVersion": "image.openshift.io/v1",
+            "metadata": {
+                "name": "njs-app4:latest",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "njs-app4"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp",
+                    "openshift.io/imported-from": "njs-app4:latest"
+                }
+            },
+            "tag": {
+                "name": "latest",
+                "annotations": null,
+                "from": {
+                    "kind": "DockerImage",
+                    "name": "njs-app4:latest"
+                },
+                "generation": null,
+                "importPolicy": {},
+                "referencePolicy": {
+                    "type": ""
+                }
+            },
+            "generation": 0,
+            "lookupPolicy": {
+                "local": false
+            },
+            "image": {
+                "metadata": {
+                    "creationTimestamp": null
+                },
+                "dockerImageMetadata": null,
+                "dockerImageLayers": null
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "build.openshift.io/v1",
+            "metadata": {
+                "name": "njs-app4",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "njs-app4"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "triggers": [
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "w4LEersPpbBAaRCYNp2f"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "LqH8omtnhQfISf0LLOfk"
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChange": {}
+                    }
+                ],
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/mprzycho/DO180-apps"
+                    },
+                    "contextDir": "nodejs-helloworld"
+                },
+                "strategy": {
+                    "type": "Source",
+                    "sourceStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "namespace": "openshift",
+                            "name": "nodejs:8"
+                        }
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "njs-app4:latest"
+                    }
+                },
+                "resources": {},
+                "postCommit": {},
+                "nodeSelector": null
+            },
+            "status": {
+                "lastVersion": 0
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "apps.openshift.io/v1",
+            "metadata": {
+                "name": "njs-app4",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "njs-app4"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "njs-app4"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "njs-app4:latest"
+                            }
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "test": false,
+                "selector": {
+                    "app": "njs-app4",
+                    "deploymentconfig": "njs-app4"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "njs-app4",
+                            "deploymentconfig": "njs-app4"
+                        },
+                        "annotations": {
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "njs-app4",
+                                "image": "njs-app4:latest",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {}
+                            }
+                        ]
+                    }
+                }
+            },
+            "status": {
+                "latestVersion": 0,
+                "observedGeneration": 0,
+                "replicas": 0,
+                "updatedReplicas": 0,
+                "availableReplicas": 0,
+                "unavailableReplicas": 0
+            }
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "njs-app4",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "njs-app4"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "protocol": "TCP",
+                        "port": 8080,
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "app": "njs-app4",
+                    "deploymentconfig": "njs-app4"
+                }
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        }
+    ]
+}
